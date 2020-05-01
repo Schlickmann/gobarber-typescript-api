@@ -2,6 +2,7 @@ import { startOfHour } from 'date-fns';
 import Appointment from '../models/Appointment';
 import AppointmentRepository from '../repositories/AppointmentRepository';
 
+// Data Transfer Object
 interface RequestDTO {
   provider: string;
   date: Date;
@@ -10,6 +11,7 @@ interface RequestDTO {
 class CreateAppointmentService {
   private appointmentsRepository: AppointmentRepository;
 
+  // Dependency Inversion
   constructor(appointmentsRepository: AppointmentRepository) {
     this.appointmentsRepository = appointmentsRepository;
   }
