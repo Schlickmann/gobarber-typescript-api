@@ -1,21 +1,18 @@
 import { Router } from 'express';
-import { startOfHour, parseISO, isEqual } from 'date-fns';
+import { startOfHour, parseISO } from 'date-fns';
 
-import Appointment from '../models/Appointments';
+import AppointmentRepository from '../repositories/AppointmentRepository';
 
 const appointmentsRouter = Router();
 
-// Defining type of appointments array
-const appointments: Appointment[] = [];
+const appointmentRepository = new AppointmentRepository();
 
 appointmentsRouter.post('/', (request, response) => {
   const { provider, date } = request.body;
 
   const parsedDate = startOfHour(parseISO(date));
 
-  const isDateNotAvailable = appointments.find(appointment =>
-    isEqual(appointment.date, parsedDate),
-  );
+  const isDateNotAvailable = appointmentRepository.findByDate(parsedDate);
 
   if (isDateNotAvailable) {
     return response.status(401).json({
@@ -23,10 +20,7 @@ appointmentsRouter.post('/', (request, response) => {
     });
   }
 
-  // Creating a new appointment based on the Appointment model
-  const appointment = new Appointment(provider, parsedDate);
-
-  appointments.push(appointment);
+  const appointment = appointmentRepository.create(provider, parsedDate);
 
   return response.json(appointment);
 });
