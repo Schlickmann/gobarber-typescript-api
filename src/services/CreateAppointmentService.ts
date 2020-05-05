@@ -16,7 +16,7 @@ class CreateAppointmentService {
 
     const appointmentDate = startOfHour(date);
 
-    const isDateNotAvailable = appointmentsRepository.findByDate(
+    const isDateNotAvailable = await appointmentsRepository.findByDate(
       appointmentDate,
     );
 
