@@ -16,7 +16,7 @@ export default class CreateUserService {
     const userExists = await userRepository.findOne({ email });
 
     if (userExists) {
-      throw Error('Operation not permitted. Email address already in use.');
+      throw new Error('Operation not permitted. Email address already in use.');
     }
 
     const hashedPassword = await hash(password, 8);

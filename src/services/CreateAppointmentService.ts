@@ -24,7 +24,7 @@ class CreateAppointmentService {
     );
 
     if (isDateNotAvailable) {
-      throw Error(
+      throw new Error(
         'Operation not permitted. Date and time select is already booked.',
       );
     }
