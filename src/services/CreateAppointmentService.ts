@@ -1,6 +1,7 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import Appointment from '../models/Appointment';
 import AppointmentRepository from '../repositories/AppointmentRepository';
 
@@ -24,7 +25,7 @@ class CreateAppointmentService {
     );
 
     if (isDateNotAvailable) {
-      throw new Error(
+      throw new AppError(
         'Operation not permitted. Date and time select is already booked.',
       );
     }
