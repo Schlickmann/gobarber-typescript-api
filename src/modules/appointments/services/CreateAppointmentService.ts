@@ -31,13 +31,10 @@ class CreateAppointmentService {
     }
 
     // creates instance of appointment
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       provider_id,
       date: appointmentDate,
     });
-
-    // saves the instance
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
