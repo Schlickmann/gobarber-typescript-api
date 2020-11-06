@@ -1,10 +1,11 @@
 import path from 'path';
 import fs from 'fs';
-import { getRepository } from 'typeorm';
 
 import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
 import User from '@modules/users/infra/typeorm/entities/User';
+
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 interface IRequest {
   user_id: string;
@@ -12,10 +13,10 @@ interface IRequest {
 }
 
 class UpdateUserAvatarService {
-  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(private userRepository: IUsersRepository) {}
 
-    const user = await userRepository.findOne({ where: { user_id } });
+  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
+    const user = await this.userRepository.findById(user_id);
 
     if (!user) {
       throw new AppError('Operation not permitted. User does not exist.', 401);
@@ -34,7 +35,7 @@ class UpdateUserAvatarService {
 
     user.avatar = avatarFilename;
 
-    await userRepository.save(user);
+    await this.userRepository.save(user);
 
     return user;
   }
