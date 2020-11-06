@@ -6,18 +6,18 @@ import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
 import User from '@modules/users/infra/typeorm/entities/User';
 
-interface Request {
+interface IRequest {
   password: string;
   email: string;
 }
 
-interface Response {
+interface IResponse {
   user: User;
   token: string;
 }
 
 export default class CreateSessionService {
-  public async execute({ password, email }: Request): Promise<Response> {
+  public async execute({ password, email }: IRequest): Promise<IResponse> {
     const userRepository = getRepository(User);
 
     const user = await userRepository.findOne({ where: { email } });

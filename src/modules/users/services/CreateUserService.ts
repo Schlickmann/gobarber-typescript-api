@@ -4,14 +4,14 @@ import { hash } from 'bcryptjs';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 
-interface Request {
+interface IRequest {
   name: string;
   password: string;
   email: string;
 }
 
 export default class CreateUserService {
-  public async execute({ name, password, email }: Request): Promise<User> {
+  public async execute({ name, password, email }: IRequest): Promise<User> {
     const userRepository = getRepository(User);
 
     const userExists = await userRepository.findOne({ email });
